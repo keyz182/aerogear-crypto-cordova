@@ -17,7 +17,7 @@
 
 #import "CryptoPlugin.h"
 #import "AGPBKDF2.h"
-#import "AGCryptoBox.h"
+#import "AGSecretBox.h"
 #import "AGRandomGenerator.h"
 
 @implementation CryptoPlugin
@@ -49,7 +49,7 @@
     NSString *iv = [options objectForKey:@"IV"];
     NSString *data = [options objectForKey:@"data"];
 
-    AGCryptoBox *cryptoBox = [[AGCryptoBox alloc] initWithKey:[self convertStringToData:key]];
+    AGSecretBox *cryptoBox = [[AGSecretBox alloc] initWithKey:[self convertStringToData:key]];
     [self.commandDelegate runInBackground:^{
         NSData *result = [cryptoBox encrypt:[data dataUsingEncoding:NSUTF8StringEncoding] IV:[self convertStringToData:iv]];
         NSString *encodedResult = [self convertDataToString:result];
@@ -64,7 +64,7 @@
     NSString *iv = [options objectForKey:@"IV"];
     NSString *data = [options objectForKey:@"data"];
 
-    AGCryptoBox *cryptoBox = [[AGCryptoBox alloc] initWithKey:[self convertStringToData:key]];
+    AGSecretBox *cryptoBox = [[AGSecretBox alloc] initWithKey:[self convertStringToData:key]];
     [self.commandDelegate runInBackground:^{
         NSData *result = [cryptoBox decrypt:[self convertStringToData:data] IV:[self convertStringToData:iv]];
         NSString *encodedResult = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
