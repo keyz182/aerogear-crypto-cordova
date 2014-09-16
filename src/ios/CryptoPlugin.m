@@ -51,9 +51,19 @@
 
     AGSecretBox *cryptoBox = [[AGSecretBox alloc] initWithKey:[self convertStringToData:key]];
     [self.commandDelegate runInBackground:^{
-        NSData *result = [cryptoBox encrypt:[data dataUsingEncoding:NSUTF8StringEncoding] IV:[self convertStringToData:iv]];
-        NSString *encodedResult = [self convertDataToString:result];
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:encodedResult];
+        NSError *error;
+        NSData *result = [cryptoBox encrypt:[data dataUsingEncoding:NSUTF8StringEncoding] nonce:[self convertStringToData:iv] error:&error];
+        
+        CDVPluginResult *pluginResult;
+        
+        if(error){
+            NSString *err = [NSString stringWithFormat:@"Reason: %@/nDescription%@", [error localizedFailureReason], [error localizedDescription]];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:err];
+        }else{
+            NSString *encodedResult = [self convertDataToString:result];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:encodedResult];
+        }
+        
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
@@ -66,9 +76,19 @@
 
     AGSecretBox *cryptoBox = [[AGSecretBox alloc] initWithKey:[self convertStringToData:key]];
     [self.commandDelegate runInBackground:^{
-        NSData *result = [cryptoBox decrypt:[self convertStringToData:data] IV:[self convertStringToData:iv]];
-        NSString *encodedResult = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:encodedResult];
+        NSError *error;
+        NSData *result = [cryptoBox decrypt:[self convertStringToData:data] nonce:[self convertStringToData:iv] error:&error];
+        
+        CDVPluginResult *pluginResult;
+        
+        if(error){
+            NSString *err = [NSString stringWithFormat:@"Reason: %@/nDescription%@", [error localizedFailureReason], [error localizedDescription]];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:err];
+        }else{
+            NSString *encodedResult = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:encodedResult];
+        }
+        
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
