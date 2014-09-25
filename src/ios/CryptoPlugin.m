@@ -32,7 +32,7 @@
 - (void)deriveKey:(CDVInvokedUrlCommand *)command {
     NSMutableDictionary *options = [self parseParameters:command];
     NSString *password = [options objectForKey:@"password"];
-    NSString *salt = [options objectForKey:@"salt"];
+    NSString *salt = [options objectForKey:@"providedSalt"];
     
     [self.commandDelegate runInBackground:^{
         AGPBKDF2 *agpbkdf2 = [[AGPBKDF2 alloc] init];
