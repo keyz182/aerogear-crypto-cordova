@@ -42,7 +42,7 @@
 
         NSString *encodedPassword = [self convertDataToString:rawPassword];
         
-        [res setValue:encodedPassword forKey:@"hash"];
+        [res setValue:encodedPassword forKey:@"password"];
         [res setValue:salt forKey:@"salt"];
         
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:res];
