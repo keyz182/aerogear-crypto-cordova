@@ -106,6 +106,22 @@ cordova plugin install https://github.com/edewit/aerogear-crypto-cordova
 
 # after adding the plugin for ios you'll have to run:
 cd platforms/ios
+```
+
+Add the following to the file ```Podfile``` (create if it doesn't exist):
+```
+platform :ios, '7.0'
+source 'https://github.com/CocoaPods/Specs.git'
+         
+pod 'AeroGear', '1.2.0'
+pod 'AeroGear-Crypto', { :git => 'https://github.com/aerogear/aerogear-crypto-ios.git', :branch => 'master' }
+pod 'UIActionSheet-Blocks'
+pod 'UIAlertView+Blocks'
+pod 'SVProgressHUD'
+```
+
+Then:
+```
 pod install
 
 ```
