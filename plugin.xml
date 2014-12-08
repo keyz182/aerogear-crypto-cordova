@@ -52,7 +52,7 @@
     <source-file src="src/ios/CryptoPlugin.m"/>
     <header-file src="src/ios/CryptoPlugin.h"/>
 
-    <asset src="src/ios/Podfile" target="../Podfile" />
+    <!--<asset src="src/ios/Podfile" target="../Podfile" />-->
   </platform>
 
 </plugin>
